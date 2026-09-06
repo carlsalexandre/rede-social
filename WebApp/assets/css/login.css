@@ -1,0 +1,129 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+.container-login {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}
+
+.container-login > div {
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 40px 32px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.redesocial-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.redesocial-form span {
+    display: block;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f3460;
+    margin-bottom: 10px;
+}
+
+.redesocial-form div {
+    width: 100%;
+}
+
+.redesocial-form input[type="text"],
+.redesocial-form input[type="password"] {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid #e1e1e8;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background-color: #f7f7fb;
+    color: #1a1a2e;
+}
+
+.redesocial-form input[type="text"]::placeholder,
+.redesocial-form input[type="password"]::placeholder {
+    color: #9a9aab;
+}
+
+.redesocial-form input[type="text"]:focus,
+.redesocial-form input[type="password"]:focus {
+    border-color: #e94560;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.15);
+}
+
+.redesocial-form a {
+    display: block;
+    font-size: 13px;
+    color: #0f3460;
+    text-decoration: none;
+    text-align: center;
+}
+
+.redesocial-form a:hover {
+    color: #e94560;
+    text-decoration: underline;
+}
+
+.btn-redesocial {
+    width: 100%;
+    padding: 13px;
+    margin-top: 6px;
+    border: none;
+    border-radius: 8px;
+    background-color: #e94560;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-redesocial:hover {
+    background-color: #d63852;
+}
+
+.btn-redesocial:active {
+    transform: scale(0.98);
+}
+
+@media (max-width: 480px) {
+    .container-login > div {
+        padding: 28px 20px;
+        border-radius: 12px;
+    }
+
+    .redesocial-form span {
+        font-size: 19px;
+    }
+}

@@ -5,10 +5,13 @@ import (
 	"log"
 	"net/http"
 	"webapp/src/router"
+	"webapp/src/utils"
 )
 
 func main() {
-	fmt.Println("Iniciado WebApp...")
+	utils.CarregarTemplates()
 	r := router.Gerar()
+
+	fmt.Println("Iniciado na porta 8000...")
 	log.Fatal(http.ListenAndServe(":8000", r))
 }
