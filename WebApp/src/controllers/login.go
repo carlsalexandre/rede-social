@@ -3,7 +3,10 @@ package controllers
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"webapp/config"
+	"webapp/src/cookies"
 	"webapp/src/models"
 	"webapp/src/respostas"
 )
@@ -21,7 +24,8 @@ func FazerLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response, erro := http.Post("http://localhost:5000/login", "application/json", bytes.NewBuffer(usuario))
+	url := fmt.Sprintf("%s/login", config.APIURL)
+	response, erro := http.Post(url, "application/json", bytes.NewBuffer(usuario))
 	if erro != nil {
 		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroDaAPI{Erro: erro.Error()})
 		return
@@ -36,6 +40,11 @@ func FazerLogin(w http.ResponseWriter, r *http.Request) {
 	var autenticacaoDados models.AutenticacaoDados
 	if erro = json.NewDecoder(response.Body).Decode(&autenticacaoDados); erro != nil {
 		respostas.JSON(w, http.StatusBadRequest, respostas.ErroDaAPI{Erro: erro.Error()})
+		return
+	}
+
+	if erro = cookies.Salvar(w, autenticacaoDados.ID, autenticacaoDados.Token); erro != nil {
+		respostas.JSON(w, http.StatusUnprocessableEntity, respostas.ErroDaAPI{Erro: erro.Error()})
 		return
 	}
 
