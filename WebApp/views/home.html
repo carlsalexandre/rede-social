@@ -7,5 +7,14 @@
 </head>
 <body>
     <h2>Página em branco por agora.</h2>
+
+    {{ range . }}
+        <h4> Título: {{ .Titulo }} </h4>
+        <h4> Conteudo: {{ .Conteudo }} </h4>
+
+        <hr/>
+    {{ end }}
+
+    <h1> {{ .OutroCampo }} </h1>
 </body>
 </html>
