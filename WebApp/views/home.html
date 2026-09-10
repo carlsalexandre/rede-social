@@ -1,20 +1,203 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Principal</title>
+    <title>Capybaras — Página Principal</title>
+ 
+    <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/home.css">
 </head>
 <body>
-    <h2>Página em branco por agora.</h2>
-
-    {{ range . }}
-        <h4> Título: {{ .Titulo }} </h4>
-        <h4> Conteudo: {{ .Conteudo }} </h4>
-
-        <hr/>
-    {{ end }}
-
-    <h1> {{ .OutroCampo }} </h1>
+ 
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top app-navbar">
+        <div class="container-fluid px-3 px-lg-4">
+ 
+            <a class="navbar-brand app-brand" href="/home">Capybaras<span class="app-brand-dot">.</span></a>
+ 
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navConteudo"
+                aria-controls="navConteudo" aria-expanded="false" aria-label="Abrir menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+ 
+            <div class="collapse navbar-collapse" id="navConteudo">
+ 
+                <form class="app-search mx-lg-auto my-3 my-lg-0" role="search" onsubmit="return false;">
+                    <svg class="app-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+                        <path d="M20 20L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <input type="search" placeholder="Buscar pessoas ou publicações" aria-label="Buscar">
+                </form>
+ 
+                <ul class="navbar-nav align-items-lg-center gap-lg-1 ms-lg-2">
+                    <li class="nav-item">
+                        <a class="nav-link app-nav-icon active" href="/home" aria-current="page" title="Início">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M4 11.5L12 4l8 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M6 10v9h12v-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="d-lg-none">Início</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link app-nav-icon" href="#" title="Mensagens">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M4 5h16v11H8l-4 4V5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="d-lg-none">Mensagens</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link app-nav-icon" href="#" title="Notificações">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                <path d="M13.7 21a2 2 0 01-3.4 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <span class="d-lg-none">Notificações</span>
+                        </a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="nav-link app-nav-avatar" href="/login" title="Sair">
+                            <span class="app-avatar app-avatar-sm">U</span>
+                        </a>
+                    </li>
+                </ul>
+ 
+            </div>
+        </div>
+    </nav>
+ 
+    <div class="container-fluid app-shell">
+        <div class="row justify-content-center gx-4">
+ 
+            <aside class="col-12 col-lg-3 app-col-left">
+                <div class="app-card app-profile-card">
+                    <div class="app-profile-cover"></div>
+                    <span class="app-avatar app-avatar-lg app-profile-avatar">U</span>
+                    <h2 class="app-profile-name">Seu perfil</h2>
+                    <p class="app-profile-handle">@seu-usuario</p>
+                    <div class="app-profile-stats">
+                        <div>
+                            <strong>{{ len . }}</strong>
+                            <span>publicações</span>
+                        </div>
+                    </div>
+                </div>
+ 
+                <nav class="app-card app-quicklinks d-none d-lg-block">
+                    <a href="/home" class="active">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 11.5L12 4l8 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v9h12v-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        Início
+                    </a>
+                    <a href="#">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                        Meu perfil
+                    </a>
+                    <a href="#">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/><path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.9 2.9l-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.6V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.6 1.7 1.7 0 00-1.9.3l-.1.1a2 2 0 11-2.9-2.9l.1-.1a1.7 1.7 0 00.3-1.9 1.7 1.7 0 00-1.6-1H3a2 2 0 110-4h.1A1.7 1.7 0 004.7 8a1.7 1.7 0 00-.3-1.9l-.1-.1a2 2 0 112.9-2.9l.1.1a1.7 1.7 0 001.9.3H9.2a1.7 1.7 0 001-1.6V1.9a2 2 0 114 0V2a1.7 1.7 0 001 1.6 1.7 1.7 0 001.9-.3l.1-.1a2 2 0 112.9 2.9l-.1.1a1.7 1.7 0 00-.3 1.9V9a1.7 1.7 0 001.6 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.6 1z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+                        Configurações
+                    </a>
+                    <a href="/login">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        Sair
+                    </a>
+                </nav>
+            </aside>
+ 
+            <main class="col-12 col-lg-6 app-col-feed">
+ 
+                <form class="app-card app-composer" onsubmit="return false;">
+                    <span class="app-avatar app-avatar-md">U</span>
+                    <input type="text" placeholder="No que você está pensando?" aria-label="Criar publicação">
+                    <button type="submit" class="app-btn-accent">Publicar</button>
+                </form>
+ 
+                {{ if . }}
+                    {{ range . }}
+                        <article class="app-card app-post">
+                            <header class="app-post-header">
+                                <span class="app-avatar app-avatar-md">{{ printf "%.1s" .AutorNick }}</span>
+                                <div class="app-post-meta">
+                                    <span class="app-post-author">{{ .AutorNick }}</span>
+                                    <span class="app-post-date">{{ .CriadaEm.Format "02/01/2006 às 15:04" }}</span>
+                                </div>
+                            </header>
+ 
+                            <h3 class="app-post-title">{{ .Titulo }}</h3>
+                            <p class="app-post-content">{{ .Conteudo }}</p>
+ 
+                            <footer class="app-post-actions">
+                                <button type="button" class="app-action" data-publicacao-id="{{ .ID }}">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                        <path d="M12 20s-7-4.4-9.5-8.8C.7 8 1.9 4.5 5 3.5 7.3 2.8 9.7 3.8 12 6.5c2.3-2.7 4.7-3.7 7-3 3.1 1 4.3 4.5 2.5 7.7C19 15.6 12 20 12 20z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                                    </svg>
+                                    <span>{{ .Curtidas }}</span>
+                                </button>
+                                <button type="button" class="app-action">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                        <path d="M4 5h16v11H8l-4 4V5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                                    </svg>
+                                    <span>Comentar</span>
+                                </button>
+                                <button type="button" class="app-action">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                        <path d="M4 12v7a1 1 0 001 1h14a1 1 0 001-1v-7M16 6l-4-4-4 4M12 2v14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <span>Compartilhar</span>
+                                </button>
+                            </footer>
+                        </article>
+                    {{ end }}
+                {{ else }}
+                    <div class="app-card app-empty">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M4 5h16v11H8l-4 4V5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                        </svg>
+                        <h3>Ainda não há publicações por aqui</h3>
+                        <p>Assim que você ou as pessoas que seguir publicarem algo, vai aparecer neste espaço.</p>
+                    </div>
+                {{ end }}
+ 
+            </main>
+ 
+            <aside class="col-12 col-xl-3 app-col-right d-none d-xl-block">
+                <div class="app-card app-suggestions">
+                    <h3>Sugestões para você</h3>
+                    <div class="app-suggestion">
+                        <span class="app-avatar app-avatar-sm">M</span>
+                        <div>
+                            <span class="app-suggestion-name">maria.dev</span>
+                            <span class="app-suggestion-sub">Sugerido para você</span>
+                        </div>
+                        <button type="button" class="app-btn-outline">Seguir</button>
+                    </div>
+                    <div class="app-suggestion">
+                        <span class="app-avatar app-avatar-sm">P</span>
+                        <div>
+                            <span class="app-suggestion-name">pedro.code</span>
+                            <span class="app-suggestion-sub">Novo por aqui</span>
+                        </div>
+                        <button type="button" class="app-btn-outline">Seguir</button>
+                    </div>
+                    <div class="app-suggestion">
+                        <span class="app-avatar app-avatar-sm">L</span>
+                        <div>
+                            <span class="app-suggestion-name">lu.silva</span>
+                            <span class="app-suggestion-sub">Amigo em comum</span>
+                        </div>
+                        <button type="button" class="app-btn-outline">Seguir</button>
+                    </div>
+                </div>
+ 
+                <footer class="app-footer-note">
+                    junto. &copy; 2026 — projeto de estudo em Go
+                </footer>
+            </aside>
+ 
+        </div>
+    </div>
+ 
+    <script src="/assets/js/bootstrap.js"></script>
 </body>
 </html>
