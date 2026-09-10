@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Capybaras — Página Principal</title>
+    <title>Rede. — Página Principal</title>
  
     <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="/assets/css/home.css">
 </head>
 <body>
  
+    <!-- ===== Navbar ===== -->
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top app-navbar">
         <div class="container-fluid px-3 px-lg-4">
  
-            <a class="navbar-brand app-brand" href="/home">Capybaras<span class="app-brand-dot">.</span></a>
+            <a class="navbar-brand app-brand" href="/home">Rede<span class="app-brand-dot">.</span></a>
  
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navConteudo"
                 aria-controls="navConteudo" aria-expanded="false" aria-label="Abrir menu">
@@ -68,9 +69,11 @@
         </div>
     </nav>
  
+    <!-- ===== Conteúdo principal ===== -->
     <div class="container-fluid app-shell">
         <div class="row justify-content-center gx-4">
  
+            <!-- Coluna esquerda: perfil e navegação -->
             <aside class="col-12 col-lg-3 app-col-left">
                 <div class="app-card app-profile-card">
                     <div class="app-profile-cover"></div>
@@ -79,7 +82,7 @@
                     <p class="app-profile-handle">@seu-usuario</p>
                     <div class="app-profile-stats">
                         <div>
-                            <strong>{{ len . }}</strong>
+                            <strong>{{ len .Publicacoes }}</strong>
                             <span>publicações</span>
                         </div>
                     </div>
@@ -105,16 +108,17 @@
                 </nav>
             </aside>
  
+            <!-- Coluna central: feed -->
             <main class="col-12 col-lg-6 app-col-feed">
  
-                <form class="app-card app-composer" onsubmit="return false;">
+                <form class="app-card app-composer" id="nova-publicacao">
                     <span class="app-avatar app-avatar-md">U</span>
-                    <input type="text" placeholder="No que você está pensando?" aria-label="Criar publicação">
+                    <input type="text" id="conteudo" name="conteudo" placeholder="No que você está pensando?" aria-label="Conteúdo da publicação" required>
                     <button type="submit" class="app-btn-accent">Publicar</button>
                 </form>
  
-                {{ if . }}
-                    {{ range . }}
+                {{ if .Publicacoes }}
+                    {{ range .Publicacoes }}
                         <article class="app-card app-post">
                             <header class="app-post-header">
                                 <span class="app-avatar app-avatar-md">{{ printf "%.1s" .AutorNick }}</span>
@@ -124,7 +128,6 @@
                                 </div>
                             </header>
  
-                            <h3 class="app-post-title">{{ .Titulo }}</h3>
                             <p class="app-post-content">{{ .Conteudo }}</p>
  
                             <footer class="app-post-actions">
@@ -161,6 +164,7 @@
  
             </main>
  
+            <!-- Coluna direita: sugestões -->
             <aside class="col-12 col-xl-3 app-col-right d-none d-xl-block">
                 <div class="app-card app-suggestions">
                     <h3>Sugestões para você</h3>
@@ -198,6 +202,8 @@
         </div>
     </div>
  
+    <script src="/assets/js/jquery.js"></script>
     <script src="/assets/js/bootstrap.js"></script>
+    <script src="/assets/js/publicacoes.js"></script>
 </body>
 </html>

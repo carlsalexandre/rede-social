@@ -14,13 +14,13 @@ func NovoRepositorioDePublicacoes(db *sql.DB) *Publicacoes {
 }
 
 func (repositorio Publicacoes) Criar(publicacao models.Publicacao) (uint64, error) {
-	statement, erro := repositorio.db.Prepare("insert into publicacoes (titulo, conteudo, autor_id) values (?, ?, ?)")
+	statement, erro := repositorio.db.Prepare("insert into publicacoes (conteudo, autor_id) values (?, ?)")
 	if erro != nil {
 		return 0, erro
 	}
 	defer statement.Close()
 
-	resultado, erro := statement.Exec(publicacao.Titulo, publicacao.Conteudo, publicacao.AutorID)
+	resultado, erro := statement.Exec(publicacao.Conteudo, publicacao.AutorID)
 	if erro != nil {
 		return 0, erro
 	}
@@ -50,7 +50,6 @@ func (repositorio Publicacoes) BuscarPorID(publicacaoID uint64) (models.Publicac
 	if linha.Next() {
 		if erro = linha.Scan(
 			&publicacao.ID,
-			&publicacao.Titulo,
 			&publicacao.Conteudo,
 			&publicacao.AutorID,
 			&publicacao.Curtidas,
@@ -83,7 +82,6 @@ func (repositorio Publicacoes) Buscar(usuarioID uint64) ([]models.Publicacao, er
 
 		if erro = linhas.Scan(
 			&publicacao.ID,
-			&publicacao.Titulo,
 			&publicacao.Conteudo,
 			&publicacao.AutorID,
 			&publicacao.Curtidas,
@@ -100,13 +98,13 @@ func (repositorio Publicacoes) Buscar(usuarioID uint64) ([]models.Publicacao, er
 }
 
 func (repositorio Publicacoes) Atualizar(publicacaoID uint64, publicacao models.Publicacao) error {
-	statement, erro := repositorio.db.Prepare("update publicacoes set titulo = ?, conteudo = ? where id = ?")
+	statement, erro := repositorio.db.Prepare("update publicacoes set conteudo = ? where id = ?")
 	if erro != nil {
 		return erro
 	}
 	defer statement.Close()
 
-	if _, erro = statement.Exec(publicacao.Titulo, publicacao.Conteudo, publicacaoID); erro != nil {
+	if _, erro = statement.Exec(publicacao.Conteudo, publicacaoID); erro != nil {
 		return erro
 	}
 
@@ -146,7 +144,6 @@ func (repositorio Publicacoes) BuscarPorUsuario(usuarioID uint64) ([]models.Publ
 
 		if erro = linhas.Scan(
 			&publicacao.ID,
-			&publicacao.Titulo,
 			&publicacao.Conteudo,
 			&publicacao.AutorID,
 			&publicacao.Curtidas,
