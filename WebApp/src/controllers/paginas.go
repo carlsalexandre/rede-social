@@ -14,10 +14,20 @@ import (
 )
 
 func CarregarTelaLogin(w http.ResponseWriter, r *http.Request) {
+	if _, erro := cookies.Ler(r); erro == nil {
+		http.Redirect(w, r, "/home", http.StatusFound)
+		return
+	}
+
 	utils.ExecutarTemplate(w, "login.html", nil)
 }
 
 func CarregarCadastro(w http.ResponseWriter, r *http.Request) {
+	if _, erro := cookies.Ler(r); erro == nil {
+		http.Redirect(w, r, "/home", http.StatusFound)
+		return
+	}
+
 	utils.ExecutarTemplate(w, "cadastro.html", nil)
 }
 

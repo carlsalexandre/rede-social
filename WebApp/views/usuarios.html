@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capybaras — Buscar pessoas</title>
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/home.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top app-navbar">
+        <div class="container-fluid px-3 px-lg-4">
+
+            <a class="navbar-brand app-brand" href="/home">Capybaras<span class="app-brand-dot">.</span></a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navConteudo"
+                aria-controls="navConteudo" aria-expanded="false" aria-label="Abrir menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navConteudo">
+
+                <form class="app-search mx-lg-auto my-3 my-lg-0" role="search" action="/usuarios" method="get">
+                    <svg class="app-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+                        <path d="M20 20L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <input type="search" name="usuario" value="{{ .Termo }}" placeholder="Buscar pessoas ou publicações" aria-label="Buscar">
+                </form>
+
+                <ul class="navbar-nav align-items-lg-center gap-lg-1 ms-lg-2">
+                    <li class="nav-item">
+                        <a class="nav-link app-nav-icon" href="/home" title="Início">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M4 11.5L12 4l8 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M6 10v9h12v-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="d-lg-none">Início</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link app-nav-icon" href="#" title="Mensagens">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M4 5h16v11H8l-4 4V5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="d-lg-none">Mensagens</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link app-nav-icon" href="#" title="Notificações">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                <path d="M13.7 21a2 2 0 01-3.4 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <span class="d-lg-none">Notificações</span>
+                        </a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="nav-link app-nav-avatar" href="/logout" title="Sair">
+                            <span class="app-avatar app-avatar-sm">U</span>
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid app-shell">
+        <div class="row justify-content-center gx-4">
+
+            <main class="col-12 col-lg-7">
+
+                <div class="app-card app-search-header">
+                    {{ if .Termo }}
+                        <h2>Resultados para "{{ .Termo }}"</h2>
+                        <p>{{ len .Usuarios }} pessoa(s) e {{ len .Publicacoes }} publicação(ões) encontrada(s)</p>
+                    {{ else }}
+                        <h2>Buscar pessoas ou publicações</h2>
+                        <p>Digite um nome, @nick ou palavra-chave na barra de busca acima.</p>
+                    {{ end }}
+                </div>
+
+                {{ if .Termo }}
+                    <h3 class="app-search-section-title">Pessoas</h3>
+                {{ end }}
+
+                {{ if .Usuarios }}
+                    {{ range .Usuarios }}
+                        <div class="app-card app-user-result">
+                            <span class="app-avatar app-avatar-md">{{ printf "%.1s" .Nick }}</span>
+                            <div class="app-user-result-info">
+                                <span class="app-user-result-name">{{ .Nome }}</span>
+                                <span class="app-user-result-nick">@{{ .Nick }}</span>
+                            </div>
+                            <a href="/usuarios/{{ .ID }}" class="app-btn-outline">Ver perfil</a>
+                        </div>
+                    {{ end }}
+                {{ else if .Termo }}
+                    <div class="app-card app-empty app-empty-compact">
+                        <p>Ninguém encontrado com esse nome ou @nick.</p>
+                    </div>
+                {{ end }}
+
+                {{ if .Termo }}
+                    <h3 class="app-search-section-title">Publicações</h3>
+
+                    {{ if .Publicacoes }}
+                        {{ range .Publicacoes }}
+                            {{ if (eq .AutorID $.UsuarioID) }}
+                                {{ template "publicacao-com-permissao" . }}
+                            {{ else }}
+                                {{ template "publicacao-sem-permissao" . }}
+                            {{ end }}
+                        {{ end }}
+                    {{ else }}
+                        <div class="app-card app-empty app-empty-compact">
+                            <p>Nenhuma publicação contém "{{ .Termo }}".</p>
+                        </div>
+                    {{ end }}
+                {{ end }}
+
+            </main>
+
+        </div>
+    </div>
+
+    <script src="/assets/js/jquery.js"></script>
+    <script src="/assets/js/bootstrap.js"></script>
+    <script src="/assets/js/publicacoes.js"></script>
+</body>
+</html>

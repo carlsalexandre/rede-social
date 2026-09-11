@@ -82,6 +82,26 @@ func BuscarPublicacoes(w http.ResponseWriter, r *http.Request) {
 	respostas.JSON(w, http.StatusOK, publicacoes)
 }
 
+func BuscarPublicacoesPorConteudo(w http.ResponseWriter, r *http.Request) {
+	termo := r.URL.Query().Get("termo")
+
+	db, erro := db.Conectar()
+	if erro != nil {
+		respostas.Erro(w, http.StatusInternalServerError, erro)
+		return
+	}
+	defer db.Close()
+
+	repositorio := repositories.NovoRepositorioDePublicacoes(db)
+	publicacoes, erro := repositorio.BuscarPorConteudo(termo)
+	if erro != nil {
+		respostas.Erro(w, http.StatusInternalServerError, erro)
+		return
+	}
+
+	respostas.JSON(w, http.StatusOK, publicacoes)
+}
+
 func BuscarPublicacao(w http.ResponseWriter, r *http.Request) {
 	parametros := mux.Vars(r)
 	publicacaoID, erro := strconv.ParseUint(parametros["publicacaoId"], 10, 64)

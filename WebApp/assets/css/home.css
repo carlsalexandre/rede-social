@@ -101,7 +101,6 @@ a {
     align-items: center;
 }
  
-/* ===== Avatares ===== */
 .app-avatar {
     display: inline-flex;
     align-items: center;
@@ -134,7 +133,6 @@ a {
     border: 4px solid var(--card);
 }
  
-/* ===== Layout ===== */
 .app-shell {
     max-width: 1200px;
     padding-top: 1.75rem;
@@ -148,7 +146,6 @@ a {
     box-shadow: 0 1px 3px rgba(15, 15, 30, .04);
 }
  
-/* ===== Coluna esquerda ===== */
 .app-profile-card {
     text-align: center;
     padding: 0 1.25rem 1.25rem;
@@ -195,6 +192,13 @@ a {
     font-size: .78rem;
     color: var(--text-muted);
 }
+
+.app-profile-action {
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
+    text-align: center;
+}
  
 .app-quicklinks {
     padding: .6rem;
@@ -223,7 +227,6 @@ a {
     background: rgba(233, 69, 96, .08);
 }
  
-/* ===== Composer ===== */
 .app-composer {
     display: flex;
     align-items: center;
@@ -286,7 +289,6 @@ a {
     color: #fff;
 }
  
-/* ===== Posts ===== */
 .app-post {
     padding: 1.1rem 1.2rem;
     margin-bottom: 1.1rem;
@@ -422,11 +424,11 @@ a {
     color: var(--coral);
     background: rgba(233, 69, 96, .08);
 }
- 
+
 .curtir-publicacao.is-curtido {
     color: var(--coral);
 }
- 
+
 .curtir-publicacao:disabled {
     opacity: .6;
     cursor: default;
@@ -455,7 +457,68 @@ a {
     margin: 0 auto;
 }
  
-/* ===== Coluna direita ===== */
+.app-search-header {
+    padding: 1.2rem 1.3rem;
+    margin-bottom: 1.1rem;
+}
+
+.app-search-header h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0 0 .25rem;
+}
+
+.app-search-header p {
+    font-size: .85rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.app-user-result {
+    display: flex;
+    align-items: center;
+    gap: .9rem;
+    padding: .9rem 1.2rem;
+    margin-bottom: .8rem;
+}
+
+.app-user-result-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    line-height: 1.3;
+}
+
+.app-user-result-name {
+    font-weight: 700;
+    font-size: .95rem;
+}
+
+.app-user-result-nick {
+    font-size: .82rem;
+    color: var(--text-muted);
+}
+
+.app-search-section-title {
+    font-size: .78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--text-muted);
+    margin: 1.4rem 0 .7rem;
+}
+
+.app-empty-compact {
+    padding: 1.2rem 1.3rem;
+    text-align: left;
+}
+
+.app-empty-compact p {
+    margin: 0;
+    max-width: none;
+}
+
 .app-suggestions {
     padding: 1.1rem 1.2rem;
     margin-bottom: 1rem;

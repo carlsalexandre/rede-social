@@ -47,3 +47,13 @@ func Ler(r *http.Request) (map[string]string, error) {
 
 	return valores, nil
 }
+
+func Deletar(w http.ResponseWriter) {
+	http.SetCookie(w, &http.Cookie{
+		Name:     "dados",
+		Value:    "",
+		Path:     "/",
+		HttpOnly: true,
+		MaxAge:   -1,
+	})
+}

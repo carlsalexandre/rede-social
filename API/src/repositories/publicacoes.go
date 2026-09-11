@@ -97,6 +97,41 @@ func (repositorio Publicacoes) Buscar(usuarioID uint64) ([]models.Publicacao, er
 	return publicacoes, nil
 }
 
+func (repositorio Publicacoes) BuscarPorConteudo(termo string) ([]models.Publicacao, error) {
+	termo = "%" + termo + "%"
+
+	linhas, erro := repositorio.db.Query(`select distinct p.*, u.nick
+	from publicacoes p
+	join usuarios u on p.autor_id = u.id
+	where p.conteudo LIKE ?
+	order by p.criadaEm desc;`, termo)
+	if erro != nil {
+		return nil, erro
+	}
+	defer linhas.Close()
+
+	var publicacoes []models.Publicacao
+
+	for linhas.Next() {
+		var publicacao models.Publicacao
+
+		if erro = linhas.Scan(
+			&publicacao.ID,
+			&publicacao.Conteudo,
+			&publicacao.AutorID,
+			&publicacao.Curtidas,
+			&publicacao.CriadaEm,
+			&publicacao.AutorNick,
+		); erro != nil {
+			return nil, erro
+		}
+
+		publicacoes = append(publicacoes, publicacao)
+	}
+
+	return publicacoes, nil
+}
+
 func (repositorio Publicacoes) Atualizar(publicacaoID uint64, publicacao models.Publicacao) error {
 	statement, erro := repositorio.db.Prepare("update publicacoes set conteudo = ? where id = ?")
 	if erro != nil {
