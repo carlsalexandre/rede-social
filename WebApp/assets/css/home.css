@@ -27,7 +27,6 @@ a {
     color: inherit;
 }
  
-/* ===== Navbar ===== */
 .app-navbar {
     background: linear-gradient(120deg, var(--navy-900), var(--navy-700));
     padding-top: .7rem;
@@ -424,6 +423,15 @@ a {
     background: rgba(233, 69, 96, .08);
 }
  
+.curtir-publicacao.is-curtido {
+    color: var(--coral);
+}
+ 
+.curtir-publicacao:disabled {
+    opacity: .6;
+    cursor: default;
+}
+ 
 .app-empty {
     text-align: center;
     padding: 3rem 1.5rem;
@@ -495,7 +503,6 @@ a {
     padding: .5rem 0 1.5rem;
 }
  
-/* ===== Animação ===== */
 @keyframes fadeUp {
     from {
         opacity: 0;

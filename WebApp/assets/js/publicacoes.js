@@ -69,3 +69,36 @@ function excluirPublicacao(evento) {
         alert("Erro ao excluir a publicação, tente novamente.");
     });
 }
+ 
+$(document).on('click', '.curtir-publicacao', curtirOuDescurtir);
+ 
+function curtirOuDescurtir(evento) {
+    evento.preventDefault();
+ 
+    var botao = $(this);
+ 
+    if (botao.prop('disabled')) {
+        return;
+    }
+ 
+    var publicacaoId = botao.data('publicacao-id');
+    var jaCurtida = botao.hasClass('is-curtido');
+    var acao = jaCurtida ? 'descurtir' : 'curtir';
+    var contador = botao.find('span');
+    var curtidasAtuais = parseInt(contador.text(), 10) || 0;
+ 
+    botao.prop('disabled', true);
+ 
+    $.ajax({
+        url: "/publicacoes/" + publicacaoId + "/" + acao,
+        method: "POST"
+    }).done(function() {
+        botao.toggleClass('is-curtido');
+        contador.text(jaCurtida ? curtidasAtuais - 1 : curtidasAtuais + 1);
+    }).fail(function(erro) {
+        console.log(erro);
+        alert("Erro ao curtir a publicação, tente novamente.");
+    }).always(function() {
+        botao.prop('disabled', false);
+    });
+}
