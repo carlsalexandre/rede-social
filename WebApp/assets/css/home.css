@@ -305,6 +305,8 @@ a {
     display: flex;
     flex-direction: column;
     line-height: 1.25;
+    flex: 1;
+    min-width: 0;
 }
  
 .app-post-author {
@@ -332,10 +334,75 @@ a {
  
 .app-post-actions {
     display: flex;
+    align-items: center;
     gap: 1.4rem;
     border-top: 1px solid var(--line);
     padding-top: .7rem;
 }
+ 
+.app-post-menu {
+    position: relative;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+ 
+.app-post-menu-toggle {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: none;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+}
+ 
+.app-post-menu-toggle:hover,
+.app-post-menu.is-open .app-post-menu-toggle {
+    background: var(--canvas);
+    color: var(--text);
+}
+ 
+.app-post-menu-panel {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    right: 0;
+    min-width: 190px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: 0 10px 26px rgba(15, 15, 30, .14);
+    padding: .35rem;
+    z-index: 5;
+}
+ 
+.app-post-menu-panel[hidden] {
+    display: none;
+}
+ 
+.app-post-menu-delete {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    border: none;
+    background: none;
+    color: var(--coral-dark);
+    font-size: .88rem;
+    font-weight: 600;
+    padding: .55rem .6rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background .15s ease;
+}
+ 
+.app-post-menu-delete:hover {
+    background: rgba(233, 69, 96, .1);
+}
+ 
  
 .app-action {
     display: flex;

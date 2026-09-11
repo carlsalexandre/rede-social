@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rede. — Página Principal</title>
+    <title>Capybaras — Página Principal</title>
  
     <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="/assets/css/home.css">
 </head>
 <body>
  
-    <!-- ===== Navbar ===== -->
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top app-navbar">
         <div class="container-fluid px-3 px-lg-4">
  
-            <a class="navbar-brand app-brand" href="/home">Rede<span class="app-brand-dot">.</span></a>
+            <a class="navbar-brand app-brand" href="/home">Capybaras<span class="app-brand-dot">.</span></a>
  
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navConteudo"
                 aria-controls="navConteudo" aria-expanded="false" aria-label="Abrir menu">
@@ -69,11 +68,9 @@
         </div>
     </nav>
  
-    <!-- ===== Conteúdo principal ===== -->
     <div class="container-fluid app-shell">
         <div class="row justify-content-center gx-4">
  
-            <!-- Coluna esquerda: perfil e navegação -->
             <aside class="col-12 col-lg-3 app-col-left">
                 <div class="app-card app-profile-card">
                     <div class="app-profile-cover"></div>
@@ -108,7 +105,6 @@
                 </nav>
             </aside>
  
-            <!-- Coluna central: feed -->
             <main class="col-12 col-lg-6 app-col-feed">
  
                 <form class="app-card app-composer" id="nova-publicacao">
@@ -119,38 +115,11 @@
  
                 {{ if .Publicacoes }}
                     {{ range .Publicacoes }}
-                        <article class="app-card app-post">
-                            <header class="app-post-header">
-                                <span class="app-avatar app-avatar-md">{{ printf "%.1s" .AutorNick }}</span>
-                                <div class="app-post-meta">
-                                    <span class="app-post-author">{{ .AutorNick }}</span>
-                                    <span class="app-post-date">{{ .CriadaEm.Format "02/01/2006 às 15:04" }}</span>
-                                </div>
-                            </header>
- 
-                            <p class="app-post-content">{{ .Conteudo }}</p>
- 
-                            <footer class="app-post-actions">
-                                <button type="button" class="app-action" data-publicacao-id="{{ .ID }}">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                        <path d="M12 20s-7-4.4-9.5-8.8C.7 8 1.9 4.5 5 3.5 7.3 2.8 9.7 3.8 12 6.5c2.3-2.7 4.7-3.7 7-3 3.1 1 4.3 4.5 2.5 7.7C19 15.6 12 20 12 20z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                                    </svg>
-                                    <span>{{ .Curtidas }}</span>
-                                </button>
-                                <button type="button" class="app-action">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                        <path d="M4 5h16v11H8l-4 4V5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-                                    </svg>
-                                    <span>Comentar</span>
-                                </button>
-                                <button type="button" class="app-action">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                        <path d="M4 12v7a1 1 0 001 1h14a1 1 0 001-1v-7M16 6l-4-4-4 4M12 2v14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    <span>Compartilhar</span>
-                                </button>
-                            </footer>
-                        </article>
+                        {{ if (eq .AutorID $.UsuarioID) }}
+                            {{ template "publicacao-com-permissao" . }}
+                        {{ else }}
+                            {{ template "publicacao-sem-permissao" . }}
+                        {{ end }}
                     {{ end }}
                 {{ else }}
                     <div class="app-card app-empty">
@@ -164,7 +133,6 @@
  
             </main>
  
-            <!-- Coluna direita: sugestões -->
             <aside class="col-12 col-xl-3 app-col-right d-none d-xl-block">
                 <div class="app-card app-suggestions">
                     <h3>Sugestões para você</h3>
@@ -195,7 +163,7 @@
                 </div>
  
                 <footer class="app-footer-note">
-                    junto. &copy; 2026 — projeto de estudo em Go
+                    Capybaras &copy; 2026 — projeto de estudo em Go
                 </footer>
             </aside>
  
