@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Capybaras — {{ .Usuario.Nome }}</title>
+    <title>Capybaras — {{ if .Logado }}{{ .Usuario.Nome }}{{ else }}Perfil{{ end }}</title>
 
     <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="/assets/css/home.css">
@@ -58,9 +58,13 @@
                         </a>
                     </li>
                     <li class="nav-item ms-lg-2">
-                        <a class="nav-link app-nav-avatar" href="/logout" title="Sair">
-                            <span class="app-avatar app-avatar-sm">U</span>
-                        </a>
+                        {{ if .Logado }}
+                            <a class="nav-link app-nav-avatar" href="/logout" title="Sair">
+                                <span class="app-avatar app-avatar-sm">U</span>
+                            </a>
+                        {{ else }}
+                            <a class="nav-link app-nav-icon" href="/login">Entrar</a>
+                        {{ end }}
                     </li>
                 </ul>
 
@@ -68,13 +72,42 @@
         </div>
     </nav>
 
+    <!-- ===== Conteúdo principal ===== -->
     <div class="container-fluid app-shell">
         <div class="row justify-content-center gx-4">
+
+        {{ if not .Logado }}
+
+            <div class="col-12 col-lg-6">
+                <div class="app-card app-login-required">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <rect x="5" y="11" width="14" height="9" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M8 11V7a4 4 0 018 0v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    <h3>Você precisa entrar para ver este perfil</h3>
+                    <p>Faça login para ver as publicações e informações desta pessoa.</p>
+                    <a href="/login" class="app-btn-accent">Fazer login</a>
+                </div>
+            </div>
+
+        {{ else }}
 
             <aside class="col-12 col-lg-4 app-col-left">
                 <div class="app-card app-profile-card">
                     <div class="app-profile-cover"></div>
-                    <span class="app-avatar app-avatar-lg app-profile-avatar">{{ printf "%.1s" .Usuario.Nick }}</span>
+                    {{ if .EhPerfilProprio }}
+                        <button type="button" class="app-avatar-editable" title="Alterar foto de perfil">
+                            <span class="app-avatar app-avatar-lg app-profile-avatar">{{ printf "%.1s" .Usuario.Nick }}</span>
+                            <span class="app-avatar-editable-overlay">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                    <path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 011 1v10a1 1 0 01-1 1H4a1 1 0 01-1-1V9a1 1 0 011-1z" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/>
+                                    <circle cx="12" cy="14" r="3.5" stroke="#fff" stroke-width="1.8"/>
+                                </svg>
+                            </span>
+                        </button>
+                    {{ else }}
+                        <span class="app-avatar app-avatar-lg app-profile-avatar">{{ printf "%.1s" .Usuario.Nick }}</span>
+                    {{ end }}
                     <h2 class="app-profile-name">{{ .Usuario.Nome }}</h2>
                     <p class="app-profile-handle">@{{ .Usuario.Nick }}</p>
                     <div class="app-profile-stats">
@@ -138,6 +171,8 @@
                 {{ end }}
 
             </main>
+
+        {{ end }}
 
         </div>
     </div>

@@ -1,9 +1,9 @@
 {{ define "publicacao-com-permissao" }}
 <article class="app-card app-post">
     <header class="app-post-header">
-        <span class="app-avatar app-avatar-md">{{ printf "%.1s" .AutorNick }}</span>
+        <a href="/usuarios/{{ .AutorID }}"><span class="app-avatar app-avatar-md">{{ printf "%.1s" .AutorNick }}</span></a>
         <div class="app-post-meta">
-            <span class="app-post-author">{{ .AutorNick }}</span>
+            <a href="/usuarios/{{ .AutorID }}" class="app-post-author">{{ .AutorNick }}</a>
             <span class="app-post-date">{{ .CriadaEm.Format "02/01/2006 às 15:04" }}</span>
         </div>
     </header>
@@ -53,9 +53,9 @@
 {{ define "publicacao-sem-permissao" }}
 <article class="app-card app-post">
     <header class="app-post-header">
-        <span class="app-avatar app-avatar-md">{{ printf "%.1s" .AutorNick }}</span>
+        <a href="/usuarios/{{ .AutorID }}"><span class="app-avatar app-avatar-md">{{ printf "%.1s" .AutorNick }}</span></a>
         <div class="app-post-meta">
-            <span class="app-post-author">{{ .AutorNick }}</span>
+            <a href="/usuarios/{{ .AutorID }}" class="app-post-author">{{ .AutorNick }}</a>
             <span class="app-post-date">{{ .CriadaEm.Format "02/01/2006 às 15:04" }}</span>
         </div>
     </header>

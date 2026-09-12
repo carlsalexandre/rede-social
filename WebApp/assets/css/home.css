@@ -163,6 +163,38 @@ a {
     margin-top: -39px;
     box-shadow: 0 4px 10px rgba(15, 15, 30, .15);
 }
+
+.app-avatar-editable {
+    position: relative;
+    display: inline-block;
+    margin-top: -39px;
+    border: none;
+    background: none;
+    padding: 0;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.app-avatar-editable .app-profile-avatar {
+    margin-top: 0;
+}
+
+.app-avatar-editable-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(26, 26, 46, .45);
+    opacity: 0;
+    transition: opacity .15s ease;
+}
+
+.app-avatar-editable:hover .app-avatar-editable-overlay,
+.app-avatar-editable:focus-visible .app-avatar-editable-overlay {
+    opacity: 1;
+}
  
 .app-profile-name {
     font-size: 1.05rem;
@@ -289,6 +321,7 @@ a {
     color: #fff;
 }
  
+/* ===== Posts ===== */
 .app-post {
     padding: 1.1rem 1.2rem;
     margin-bottom: 1.1rem;
@@ -313,6 +346,19 @@ a {
 .app-post-author {
     font-weight: 700;
     font-size: .95rem;
+}
+
+.app-post-author:hover {
+    color: var(--coral);
+    text-decoration: underline;
+}
+
+.app-post-header a .app-avatar {
+    transition: opacity .15s ease;
+}
+
+.app-post-header a:hover .app-avatar {
+    opacity: .85;
 }
  
 .app-post-date {
@@ -457,6 +503,34 @@ a {
     margin: 0 auto;
 }
  
+.app-login-required {
+    text-align: center;
+    padding: 3rem 2rem;
+    margin-top: 1.5rem;
+}
+
+.app-login-required svg {
+    color: var(--line);
+    margin-bottom: 1rem;
+}
+
+.app-login-required h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: .4rem;
+}
+
+.app-login-required p {
+    font-size: .92rem;
+    color: var(--text-muted);
+    max-width: 360px;
+    margin: 0 auto 1.3rem;
+}
+
+.app-login-required .app-btn-accent {
+    display: inline-block;
+}
+
 .app-search-header {
     padding: 1.2rem 1.3rem;
     margin-bottom: 1.1rem;

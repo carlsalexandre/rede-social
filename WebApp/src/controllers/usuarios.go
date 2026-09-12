@@ -116,11 +116,24 @@ func buscarPublicacoesNaAPI(r *http.Request, termo string) ([]models.Publicacao,
 	return publicacoes, nil
 }
 
+type dadosPerfil struct {
+	Logado          bool
+	Usuario         models.Usuario
+	Publicacoes     []models.Publicacao
+	UsuarioID       uint64
+	EhPerfilProprio bool
+}
+
 func VisualizarPerfil(w http.ResponseWriter, r *http.Request) {
 	parametros := mux.Vars(r)
 	usuarioID, erro := strconv.ParseUint(parametros["usuarioId"], 10, 64)
 	if erro != nil {
 		respostas.JSON(w, http.StatusBadRequest, respostas.ErroDaAPI{Erro: erro.Error()})
+		return
+	}
+
+	if _, erro := cookies.Ler(r); erro != nil {
+		utils.ExecutarTemplate(w, "perfil.html", dadosPerfil{Logado: false})
 		return
 	}
 
@@ -160,12 +173,8 @@ func VisualizarPerfil(w http.ResponseWriter, r *http.Request) {
 	cookie, _ := cookies.Ler(r)
 	usuarioLogadoID, _ := strconv.ParseUint(cookie["id"], 10, 64)
 
-	utils.ExecutarTemplate(w, "perfil.html", struct {
-		Usuario         models.Usuario
-		Publicacoes     []models.Publicacao
-		UsuarioID       uint64
-		EhPerfilProprio bool
-	}{
+	utils.ExecutarTemplate(w, "perfil.html", dadosPerfil{
+		Logado:          true,
 		Usuario:         usuario,
 		Publicacoes:     publicacoes,
 		UsuarioID:       usuarioLogadoID,
