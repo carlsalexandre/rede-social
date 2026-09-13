@@ -82,18 +82,7 @@ func BuscarUsuarios(w http.ResponseWriter, r *http.Request) {
 
 func buscarUsuariosNaAPI(r *http.Request, termo string) ([]models.Usuario, error) {
 	url := fmt.Sprintf("%s/usuarios?usuario=%s", config.APIURL, neturl.QueryEscape(termo))
-	response, erro := requisicoes.RequisicaoComAutenticacao(r, http.MethodGet, url, nil)
-	if erro != nil {
-		return nil, erro
-	}
-	defer response.Body.Close()
-
-	var usuarios []models.Usuario
-	if erro = json.NewDecoder(response.Body).Decode(&usuarios); erro != nil {
-		return nil, erro
-	}
-
-	return usuarios, nil
+	return buscarListaDeUsuarios(r, url)
 }
 
 func buscarPublicacoesNaAPI(r *http.Request, termo string) ([]models.Publicacao, error) {
@@ -116,12 +105,30 @@ func buscarPublicacoesNaAPI(r *http.Request, termo string) ([]models.Publicacao,
 	return publicacoes, nil
 }
 
+func buscarListaDeUsuarios(r *http.Request, url string) ([]models.Usuario, error) {
+	response, erro := requisicoes.RequisicaoComAutenticacao(r, http.MethodGet, url, nil)
+	if erro != nil {
+		return nil, erro
+	}
+	defer response.Body.Close()
+
+	var usuarios []models.Usuario
+	if erro = json.NewDecoder(response.Body).Decode(&usuarios); erro != nil {
+		return nil, erro
+	}
+
+	return usuarios, nil
+}
+
 type dadosPerfil struct {
-	Logado          bool
-	Usuario         models.Usuario
-	Publicacoes     []models.Publicacao
-	UsuarioID       uint64
-	EhPerfilProprio bool
+	Logado           bool
+	Usuario          models.Usuario
+	Publicacoes      []models.Publicacao
+	Seguidores       []models.Usuario
+	Seguindo         []models.Usuario
+	UsuarioID        uint64
+	EhPerfilProprio  bool
+	SegueEsseUsuario bool
 }
 
 func VisualizarPerfil(w http.ResponseWriter, r *http.Request) {
@@ -173,11 +180,139 @@ func VisualizarPerfil(w http.ResponseWriter, r *http.Request) {
 	cookie, _ := cookies.Ler(r)
 	usuarioLogadoID, _ := strconv.ParseUint(cookie["id"], 10, 64)
 
+	seguidores, erro := buscarListaDeUsuarios(r, fmt.Sprintf("%s/usuarios/%d/seguidores", config.APIURL, usuarioID))
+	if erro != nil {
+		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroDaAPI{Erro: erro.Error()})
+		return
+	}
+
+	seguindo, erro := buscarListaDeUsuarios(r, fmt.Sprintf("%s/usuarios/%d/seguindo", config.APIURL, usuarioID))
+	if erro != nil {
+		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroDaAPI{Erro: erro.Error()})
+		return
+	}
+
+	segueEsseUsuario := false
+	for _, seguidor := range seguidores {
+		if seguidor.ID == usuarioLogadoID {
+			segueEsseUsuario = true
+			break
+		}
+	}
+
 	utils.ExecutarTemplate(w, "perfil.html", dadosPerfil{
-		Logado:          true,
-		Usuario:         usuario,
-		Publicacoes:     publicacoes,
-		UsuarioID:       usuarioLogadoID,
-		EhPerfilProprio: usuarioID == usuarioLogadoID,
+		Logado:           true,
+		Usuario:          usuario,
+		Publicacoes:      publicacoes,
+		Seguidores:       seguidores,
+		Seguindo:         seguindo,
+		UsuarioID:        usuarioLogadoID,
+		EhPerfilProprio:  usuarioID == usuarioLogadoID,
+		SegueEsseUsuario: segueEsseUsuario,
 	})
+}
+
+func SeguirUsuario(w http.ResponseWriter, r *http.Request) {
+	parametros := mux.Vars(r)
+	usuarioID, erro := strconv.ParseUint(parametros["usuarioId"], 10, 64)
+	if erro != nil {
+		respostas.JSON(w, http.StatusBadRequest, respostas.ErroDaAPI{Erro: erro.Error()})
+		return
+	}
+
+	url := fmt.Sprintf("%s/usuarios/%d/seguir", config.APIURL, usuarioID)
+	response, erro := requisicoes.RequisicaoComAutenticacao(r, http.MethodPost, url, nil)
+	if erro != nil {
+		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroDaAPI{Erro: erro.Error()})
+		return
+	}
+	defer response.Body.Close()
+
+	if response.StatusCode >= 400 {
+		respostas.TratarStatusCodeErro(w, response)
+		return
+	}
+
+	respostas.JSON(w, response.StatusCode, nil)
+}
+
+func PararDeSeguirUsuario(w http.ResponseWriter, r *http.Request) {
+	parametros := mux.Vars(r)
+	usuarioID, erro := strconv.ParseUint(parametros["usuarioId"], 10, 64)
+	if erro != nil {
+		respostas.JSON(w, http.StatusBadRequest, respostas.ErroDaAPI{Erro: erro.Error()})
+		return
+	}
+
+	url := fmt.Sprintf("%s/usuarios/%d/parar-de-seguir", config.APIURL, usuarioID)
+	response, erro := requisicoes.RequisicaoComAutenticacao(r, http.MethodPost, url, nil)
+	if erro != nil {
+		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroDaAPI{Erro: erro.Error()})
+		return
+	}
+	defer response.Body.Close()
+
+	if response.StatusCode >= 400 {
+		respostas.TratarStatusCodeErro(w, response)
+		return
+	}
+
+	respostas.JSON(w, response.StatusCode, nil)
+}
+
+func VisualizarSeguidores(w http.ResponseWriter, r *http.Request) {
+	visualizarConexoes(w, r, "seguidores", "Seguidores")
+}
+
+func VisualizarSeguindo(w http.ResponseWriter, r *http.Request) {
+	visualizarConexoes(w, r, "seguindo", "Seguindo")
+}
+
+func visualizarConexoes(w http.ResponseWriter, r *http.Request, caminho, titulo string) {
+	parametros := mux.Vars(r)
+	usuarioID, erro := strconv.ParseUint(parametros["usuarioId"], 10, 64)
+	if erro != nil {
+		respostas.JSON(w, http.StatusBadRequest, respostas.ErroDaAPI{Erro: erro.Error()})
+		return
+	}
+
+	usuario, erro := buscarUsuarioPorID(r, usuarioID)
+	if erro != nil {
+		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroDaAPI{Erro: erro.Error()})
+		return
+	}
+
+	usuarios, erro := buscarListaDeUsuarios(r, fmt.Sprintf("%s/usuarios/%d/%s", config.APIURL, usuarioID, caminho))
+	if erro != nil {
+		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroDaAPI{Erro: erro.Error()})
+		return
+	}
+
+	utils.ExecutarTemplate(w, "conexoes.html", struct {
+		Titulo    string
+		Usuario   models.Usuario
+		UsuarioID uint64
+		Usuarios  []models.Usuario
+	}{
+		Titulo:    titulo,
+		Usuario:   usuario,
+		UsuarioID: usuarioID,
+		Usuarios:  usuarios,
+	})
+}
+
+func buscarUsuarioPorID(r *http.Request, usuarioID uint64) (models.Usuario, error) {
+	url := fmt.Sprintf("%s/usuarios/%d", config.APIURL, usuarioID)
+	response, erro := requisicoes.RequisicaoComAutenticacao(r, http.MethodGet, url, nil)
+	if erro != nil {
+		return models.Usuario{}, erro
+	}
+	defer response.Body.Close()
+
+	var usuario models.Usuario
+	if erro = json.NewDecoder(response.Body).Decode(&usuario); erro != nil {
+		return models.Usuario{}, erro
+	}
+
+	return usuario, nil
 }

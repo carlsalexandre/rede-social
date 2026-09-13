@@ -26,7 +26,7 @@ a {
     text-decoration: none;
     color: inherit;
 }
- 
+
 .app-navbar {
     background: linear-gradient(120deg, var(--navy-900), var(--navy-700));
     padding-top: .7rem;
@@ -212,7 +212,15 @@ a {
     border-top: 1px solid var(--line);
     padding-top: .85rem;
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
+}
+
+.app-profile-stats a {
+    transition: opacity .15s ease;
+}
+
+.app-profile-stats a:hover {
+    opacity: .7;
 }
  
 .app-profile-stats strong {
@@ -321,7 +329,6 @@ a {
     color: #fff;
 }
  
-/* ===== Posts ===== */
 .app-post {
     padding: 1.1rem 1.2rem;
     margin-bottom: 1.1rem;
@@ -569,6 +576,23 @@ a {
     font-size: .95rem;
 }
 
+.app-user-result-name:hover {
+    color: var(--coral);
+    text-decoration: underline;
+}
+
+.app-back-link {
+    display: inline-block;
+    font-size: .82rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: .6rem;
+}
+
+.app-back-link:hover {
+    color: var(--coral);
+}
+
 .app-user-result-nick {
     font-size: .82rem;
     color: var(--text-muted);
@@ -593,6 +617,7 @@ a {
     max-width: none;
 }
 
+/* ===== Coluna direita ===== */
 .app-suggestions {
     padding: 1.1rem 1.2rem;
     margin-bottom: 1rem;

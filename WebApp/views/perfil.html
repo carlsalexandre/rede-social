@@ -72,7 +72,6 @@
         </div>
     </nav>
 
-    <!-- ===== Conteúdo principal ===== -->
     <div class="container-fluid app-shell">
         <div class="row justify-content-center gx-4">
 
@@ -115,10 +114,20 @@
                             <strong>{{ len .Publicacoes }}</strong>
                             <span>publicações</span>
                         </div>
+                        <a href="/usuarios/{{ .Usuario.ID }}/seguidores">
+                            <strong>{{ len .Seguidores }}</strong>
+                            <span>seguidores</span>
+                        </a>
+                        <a href="/usuarios/{{ .Usuario.ID }}/seguindo">
+                            <strong>{{ len .Seguindo }}</strong>
+                            <span>seguindo</span>
+                        </a>
                     </div>
 
                     {{ if .EhPerfilProprio }}
                         <a href="/configuracoes" class="app-btn-outline app-profile-action">Editar perfil</a>
+                    {{ else if .SegueEsseUsuario }}
+                        <button type="button" class="app-btn-outline app-profile-action seguir-usuario is-seguindo" data-usuario-id="{{ .Usuario.ID }}">Deixar de seguir</button>
                     {{ else }}
                         <button type="button" class="app-btn-accent app-profile-action seguir-usuario" data-usuario-id="{{ .Usuario.ID }}">Seguir</button>
                     {{ end }}
@@ -180,5 +189,6 @@
     <script src="/assets/js/jquery.js"></script>
     <script src="/assets/js/bootstrap.js"></script>
     <script src="/assets/js/publicacoes.js"></script>
+    <script src="/assets/js/usuarios.js"></script>
 </body>
 </html>
