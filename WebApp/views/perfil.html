@@ -57,15 +57,11 @@
                             <span class="d-lg-none">Notificações</span>
                         </a>
                     </li>
-                    <li class="nav-item ms-lg-2">
-                        {{ if .Logado }}
-                            <a class="nav-link app-nav-avatar" href="/logout" title="Sair">
-                                <span class="app-avatar app-avatar-sm">U</span>
-                            </a>
-                        {{ else }}
+                    {{ if not .Logado }}
+                        <li class="nav-item ms-lg-2">
                             <a class="nav-link app-nav-icon" href="/login">Entrar</a>
-                        {{ end }}
-                    </li>
+                        </li>
+                    {{ end }}
                 </ul>
 
             </div>
