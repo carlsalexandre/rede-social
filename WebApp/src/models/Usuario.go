@@ -3,9 +3,10 @@ package models
 import "time"
 
 type Usuario struct {
-	ID       uint64    `json:"id,omitempty"`
-	Nome     string    `json:"nome,omitempty"`
-	Nick     string    `json:"nick,omitempty"`
-	Email    string    `json:"email,omitempty"`
-	CriadoEm time.Time `json:"CriadoEm,omitempty"`
+	ID           uint64     `json:"id,omitempty"`
+	Nome         string     `json:"nome,omitempty"`
+	Nick         string     `json:"nick,omitempty"`
+	Email        string     `json:"email,omitempty"`
+	CriadoEm     time.Time  `json:"CriadoEm,omitempty"`
+	AtualizadoEm *time.Time `json:"atualizadoEm,omitempty"`
 }

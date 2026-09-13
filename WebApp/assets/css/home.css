@@ -26,7 +26,7 @@ a {
     text-decoration: none;
     color: inherit;
 }
-
+ 
 .app-navbar {
     background: linear-gradient(120deg, var(--navy-900), var(--navy-700));
     padding-top: .7rem;
@@ -145,7 +145,7 @@ a {
     border: 1px solid var(--line);
     box-shadow: 0 1px 3px rgba(15, 15, 30, .04);
 }
- 
+
 .app-profile-card {
     text-align: center;
     padding: 0 1.25rem 1.25rem;
@@ -510,6 +510,85 @@ a {
     margin: 0 auto;
 }
  
+.app-settings-card {
+    padding: 1.3rem 1.4rem;
+    margin-bottom: 1.2rem;
+}
+
+.app-settings-card h2 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 0 0 1rem;
+}
+
+.app-settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: .9rem;
+}
+
+.app-settings-form label {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+    font-size: .85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.app-settings-form input {
+    border: 1px solid var(--line);
+    background: var(--canvas);
+    border-radius: 10px;
+    padding: .6rem .9rem;
+    font-size: .92rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color .15s ease;
+}
+
+.app-settings-form input:focus {
+    border-color: var(--coral);
+}
+
+.app-settings-form input:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+.app-settings-form button {
+    align-self: flex-start;
+}
+
+.app-settings-locked {
+    background: rgba(233, 69, 96, .08);
+    color: var(--coral-dark);
+    font-size: .85rem;
+    padding: .7rem .9rem;
+    border-radius: 10px;
+    margin: 0 0 1rem;
+}
+
+.app-settings-danger {
+    border-color: rgba(233, 69, 96, .3);
+}
+
+.app-settings-danger p {
+    font-size: .88rem;
+    color: var(--text-muted);
+    margin: 0 0 1rem;
+}
+
+.app-btn-danger {
+    border-color: var(--coral-dark);
+    color: var(--coral-dark);
+}
+
+.app-btn-danger:hover {
+    background: var(--coral-dark);
+    color: #fff;
+}
+
 .app-login-required {
     text-align: center;
     padding: 3rem 2rem;
@@ -617,7 +696,6 @@ a {
     max-width: none;
 }
 
-/* ===== Coluna direita ===== */
 .app-suggestions {
     padding: 1.1rem 1.2rem;
     margin-bottom: 1rem;

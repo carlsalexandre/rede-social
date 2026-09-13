@@ -22,7 +22,11 @@ function seguirOuDeixarDeSeguir(evento) {
         window.location.reload();
     }).fail(function(erro) {
         console.log(erro);
-        alert("Erro ao atualizar, tente novamente.");
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro ao atualizar',
+            text: 'Tente novamente.'
+        });
         botao.prop('disabled', false);
     });
 }

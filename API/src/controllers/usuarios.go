@@ -9,10 +9,12 @@ import (
 	"api/src/security"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/gorilla/mux"
 )
@@ -142,6 +144,27 @@ func AtualizarUsuario(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 
 	repositorio := repositories.NovoRepositorioUsuario(db)
+
+	usuarioSalvoNoBanco, erro := repositorio.BuscarPorID(usuarioID)
+	if erro != nil {
+		respostas.Erro(w, http.StatusInternalServerError, erro)
+		return
+	}
+
+	const prazoParaAtualizar = 3 * 30 * 24 * time.Hour // ~3 meses
+
+	if usuarioSalvoNoBanco.AtualizadoEm != nil {
+		tempoDesdeUltimaAtualizacao := time.Since(*usuarioSalvoNoBanco.AtualizadoEm)
+
+		if tempoDesdeUltimaAtualizacao < prazoParaAtualizar {
+			diasRestantes := int((prazoParaAtualizar - tempoDesdeUltimaAtualizacao).Hours() / 24)
+			respostas.Erro(w, http.StatusForbidden, fmt.Errorf(
+				"você só pode atualizar seus dados novamente em %d dia(s)", diasRestantes,
+			))
+			return
+		}
+	}
+
 	if erro = repositorio.Atualizar(usuarioID, usuario); erro != nil {
 		respostas.Erro(w, http.StatusInternalServerError, erro)
 		return

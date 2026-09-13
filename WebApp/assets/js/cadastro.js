@@ -2,10 +2,13 @@ $('#cadastro').on('submit', criarUsuario)
 
 function criarUsuario(evento) {
     evento.preventDefault();
-    console.log("dentro da função usuario");
 
     if ($('#senha').val() != $('#confirmar-senha').val()) {
-        alert("As senhas não estão iguais.");
+        Swal.fire({
+            icon: 'warning',
+            title: 'Ops!',
+            text: 'As senhas não estão iguais.'
+        });
         return;
     }
 
@@ -19,9 +22,19 @@ function criarUsuario(evento) {
             senha:  $('#senha').val()
         }
     }).done(function() {
-        alert("Usuário cadastrado com sucesso, efetue o login");
+        Swal.fire({
+            icon: 'success',
+            title: 'Conta criada!',
+            text: 'Usuário cadastrado com sucesso, efetue o login.'
+        }).then(function() {
+            window.location = "/login";
+        });
     }).fail(function(erro) {
         console.log(erro);
-        alert("Erro ao cadastrar usuário, verifique as informações");
+        Swal.fire({
+            icon: 'error',
+            title: 'Erro ao cadastrar',
+            text: 'Verifique as informações e tente novamente.'
+        });
     });
 }

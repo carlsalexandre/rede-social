@@ -13,6 +13,10 @@ function fazerlogin(evento) {
     }).done(function() {
         window.location = "/home"
     }).fail(function() {
-        alert("Usuário/Senha inválido.")
+        Swal.fire({
+            icon: 'error',
+            title: 'Não foi possível entrar',
+            text: 'Usuário ou senha inválido.'
+        });
     })
 }

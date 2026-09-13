@@ -11,7 +11,8 @@ CREATE TABLE usuarios(
     nick varchar(50) not null unique,
     email varchar(50) not null unique,
     senha varchar(100) not null,
-    criadoEm timestamp default current_timestamp()
+    criadoEm timestamp default current_timestamp(),
+    atualizado_em timestamp null default null
 ) ENGINE=INNODB;
  
 CREATE TABLE seguidores(

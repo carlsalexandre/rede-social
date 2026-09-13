@@ -18,6 +18,17 @@ import (
 	"github.com/gorilla/mux"
 )
 
+type dadosPerfil struct {
+	Logado           bool
+	Usuario          models.Usuario
+	Publicacoes      []models.Publicacao
+	Seguidores       []models.Usuario
+	Seguindo         []models.Usuario
+	UsuarioID        uint64
+	EhPerfilProprio  bool
+	SegueEsseUsuario bool
+}
+
 func CriarUsuario(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
@@ -118,17 +129,6 @@ func buscarListaDeUsuarios(r *http.Request, url string) ([]models.Usuario, error
 	}
 
 	return usuarios, nil
-}
-
-type dadosPerfil struct {
-	Logado           bool
-	Usuario          models.Usuario
-	Publicacoes      []models.Publicacao
-	Seguidores       []models.Usuario
-	Seguindo         []models.Usuario
-	UsuarioID        uint64
-	EhPerfilProprio  bool
-	SegueEsseUsuario bool
 }
 
 func VisualizarPerfil(w http.ResponseWriter, r *http.Request) {

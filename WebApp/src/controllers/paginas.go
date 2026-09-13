@@ -54,11 +54,19 @@ func CarregarPaginaPrincipal(w http.ResponseWriter, r *http.Request) {
 	cookie, _ := cookies.Ler(r)
 	usuarioID, _ := strconv.ParseUint(cookie["id"], 10, 64)
 
+	usuario, erro := buscarUsuarioPorID(r, usuarioID)
+	if erro != nil {
+		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroDaAPI{Erro: erro.Error()})
+		return
+	}
+
 	utils.ExecutarTemplate(w, "home.html", struct {
 		Publicacoes []models.Publicacao
+		Usuario     models.Usuario
 		UsuarioID   uint64
 	}{
 		Publicacoes: publicacoes,
+		Usuario:     usuario,
 		UsuarioID:   usuarioID,
 	})
 }

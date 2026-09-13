@@ -54,4 +54,22 @@ var rotasUsuarios = []Rota{
 		Funcao:       controllers.VisualizarPerfil,
 		Autenticacao: false,
 	},
+	{
+		URI:          "/usuarios/{usuarioId}",
+		Metodo:       http.MethodPut,
+		Funcao:       controllers.AtualizarUsuario,
+		Autenticacao: true,
+	},
+	{
+		URI:          "/usuarios/{usuarioId}/atualizar-senha",
+		Metodo:       http.MethodPost,
+		Funcao:       controllers.AtualizarSenha,
+		Autenticacao: true,
+	},
+	{
+		URI:          "/usuarios/{usuarioId}",
+		Metodo:       http.MethodDelete,
+		Funcao:       controllers.ExcluirConta,
+		Autenticacao: true,
+	},
 }

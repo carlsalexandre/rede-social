@@ -71,7 +71,7 @@ func (repositorio usuarios) Buscar(nomeOuNick string) ([]models.Usuario, error) 
 
 func (repositorio usuarios) BuscarPorID(ID uint64) (models.Usuario, error) {
 	linhas, erro := repositorio.db.Query(
-		"select id, nome, nick, email, criadoEm from usuarios where id = ?",
+		"select id, nome, nick, email, criadoEm, atualizado_em from usuarios where id = ?",
 		ID,
 	)
 	if erro != nil {
@@ -82,14 +82,21 @@ func (repositorio usuarios) BuscarPorID(ID uint64) (models.Usuario, error) {
 	var usuario models.Usuario
 
 	if linhas.Next() {
+		var atualizadoEm sql.NullTime
+
 		if erro = linhas.Scan(
 			&usuario.ID,
 			&usuario.Nome,
 			&usuario.Nick,
 			&usuario.Email,
 			&usuario.CriadoEm,
+			&atualizadoEm,
 		); erro != nil {
 			return models.Usuario{}, erro
+		}
+
+		if atualizadoEm.Valid {
+			usuario.AtualizadoEm = &atualizadoEm.Time
 		}
 	}
 
@@ -97,7 +104,7 @@ func (repositorio usuarios) BuscarPorID(ID uint64) (models.Usuario, error) {
 }
 
 func (repositorio usuarios) Atualizar(ID uint64, usuario models.Usuario) error {
-	statement, erro := repositorio.db.Prepare("update usuarios set nome = ?, nick = ?, email = ? where id = ?")
+	statement, erro := repositorio.db.Prepare("update usuarios set nome = ?, nick = ?, email = ?, atualizado_em = now() where id = ?")
 	if erro != nil {
 		return erro
 	}
