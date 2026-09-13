@@ -2,6 +2,8 @@
 
 > 🇧🇷 [Português](#-português) · 🇺🇸 [English](#-english)
 
+![Tela inicial do Capybaras](docs/screenshot-home.png)
+
 ---
 
 ## 🇧🇷 Português
